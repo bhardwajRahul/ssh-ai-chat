@@ -3,6 +3,7 @@ import antfu from '@antfu/eslint-config'
 export default antfu({
   formatters: true,
   react: true,
+  pnpm: false,
   ignores: ['i18n', 'drizzle'],
   rules: {
     'react-refresh/only-export-components': 'off',

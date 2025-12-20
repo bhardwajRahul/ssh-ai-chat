@@ -66,8 +66,8 @@ export function useChat() {
       await createOrUpdateConversation(user.username, conversationId, m['chat.newConversation'](null, { locale }), messages)
 
       const systemModel = AI_MODEL_CONFIG[env.AI_SYSTEM_MODEL]?.id
-        ? models[env.AI_SYSTEM_MODEL].chat(AI_MODEL_CONFIG[env.AI_SYSTEM_MODEL]?.id)
-        : models[defaultModel.name].chat(defaultModel.id)
+        ? models[env.AI_SYSTEM_MODEL](AI_MODEL_CONFIG[env.AI_SYSTEM_MODEL]?.id)
+        : models[defaultModel.name](defaultModel.id)
       const { text: title } = await generateText({
         model: wrapLanguageModel({
           model: systemModel,
@@ -148,10 +148,10 @@ export function useChat() {
         stopWhen: stepCountIs(20),
         model: thinkingModel.includes(model.name)
           ? wrapLanguageModel({
-              model: models[model.name].chat(model.id),
+              model: models[model.name](model.id),
               middleware: extractReasoningMiddleware({ tagName: 'think' }),
             })
-          : models[model.name].chat(model.id),
+          : models[model.name](model.id),
         onError: (error) => {
           assistantMessage.content = m['chat.error'](null, { locale })
           assistantMessage.metadata.version++
